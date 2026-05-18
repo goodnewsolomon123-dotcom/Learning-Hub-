@@ -1669,7 +1669,15 @@ function makeParticles(){
   const c=document.getElementById("particles");if(!c)return;
   for(let i=0;i<12;i++){const p=document.createElement("div");p.className="particle";p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*.5+.2};`;c.appendChild(p);}
 }
-
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW Registered!', reg))
+        .catch(err => console.log('SW Failed!', err));
+    });
+  }
+</script>
 console.log("%cOx-Bridge Learning Hub v2.0 | PWA Ready ✓ | Ox-Bridge Technology | Goodnews Solomon | Admin: goodnewsolomon123@gmail.com","color:#6c63ff;font-size:13px;font-weight:bold;");
 </script>
 </body>
