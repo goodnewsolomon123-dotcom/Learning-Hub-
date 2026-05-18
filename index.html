@@ -10,11 +10,25 @@
 <meta name="apple-mobile-web-app-title" content="Ox-Bridge">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Ox-Bridge">
+<meta name="msapplication-TileColor" content="#6c63ff">
+<meta name="msapplication-TileImage" content="icon-144.png">
+<meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-icon-180.png">
-<link rel="apple-touch-startup-image" href="apple-icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<!-- iOS Splash Screens -->
+<link rel="apple-touch-startup-image" href="splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+
 <title>Ox-Bridge • Learn Smarter</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Fredoka+One&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
 <style>
@@ -51,44 +65,68 @@
 [data-theme="light"] #splash-screen{background:linear-gradient(135deg,#0a0a0f,#1a1040);}
 
 /* ======================================================
-   SPLASH SCREEN
+   ENHANCED SPLASH SCREEN
    ====================================================== */
 #splash-screen{
   position:fixed;inset:0;z-index:99999;
   background:linear-gradient(135deg,#0a0a0f 0%,#1a1040 50%,#0a0a0f 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
-  transition:opacity .5s ease,transform .5s ease;
+  transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1),filter .6s ease;
+  overscroll-behavior:none;
+  -webkit-overflow-scrolling:none;
 }
-#splash-screen.hidden{opacity:0;transform:scale(1.05);pointer-events:none;}
+#splash-screen.hidden{opacity:0;transform:scale(1.08);filter:blur(8px);pointer-events:none;}
 .splash-logo-wrap{
-  width:110px;height:110px;border-radius:28px;
+  width:120px;height:120px;border-radius:28px;
   background:linear-gradient(135deg,#6c63ff,#00e5a0);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 60px rgba(108,99,255,.6),0 0 120px rgba(0,229,160,.3);
-  margin-bottom:28px;animation:splashPulse 2s ease infinite;
+  box-shadow:0 0 60px rgba(108,99,255,.5),0 0 120px rgba(0,229,160,.25),0 8px 32px rgba(0,0,0,.3);
+  margin-bottom:28px;animation:splashPulse 2.5s ease infinite;
+  position:relative;
 }
-.splash-logo-inner{font-family:'Syne',sans-serif;font-weight:800;font-size:40px;color:#fff;letter-spacing:-2px;}
-.splash-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:#fff;margin-bottom:6px;letter-spacing:-.5px;}
-.splash-sub{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:40px;font-family:'DM Mono',monospace;}
-.splash-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,.1);border-radius:9999px;overflow:hidden;}
-.splash-bar{height:100%;background:linear-gradient(90deg,#6c63ff,#00e5a0);border-radius:9999px;width:0%;animation:splashLoad 2s ease forwards;}
-.splash-powered{position:absolute;bottom:30px;color:rgba(255,255,255,.3);font-size:11px;font-family:'DM Mono',monospace;}
-@keyframes splashPulse{0%,100%{box-shadow:0 0 60px rgba(108,99,255,.6),0 0 120px rgba(0,229,160,.3)}50%{box-shadow:0 0 80px rgba(108,99,255,.8),0 0 160px rgba(0,229,160,.5)}}
-@keyframes splashLoad{0%{width:0%}40%{width:60%}70%{width:80%}100%{width:100%}}
+.splash-logo-wrap::after{
+  content:'';position:absolute;inset:-4px;border-radius:32px;
+  background:linear-gradient(135deg,rgba(108,99,255,.3),rgba(0,229,160,.3));
+  z-index:-1;animation:splashPulse 2.5s ease infinite;
+}
+.splash-logo-inner{font-family:'Syne',sans-serif;font-weight:800;font-size:44px;color:#fff;letter-spacing:-2px;text-shadow:0 2px 20px rgba(0,0,0,.3);}
+.splash-title{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:#fff;margin-bottom:6px;letter-spacing:-.5px;animation:fadeInUp .6s ease .2s both;}
+.splash-sub{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:40px;font-family:'DM Mono',monospace;animation:fadeInUp .6s ease .35s both;}
+.splash-bar-wrap{width:220px;height:4px;background:rgba(255,255,255,.08);border-radius:9999px;overflow:hidden;animation:fadeInUp .6s ease .5s both;}
+.splash-bar{height:100%;background:linear-gradient(90deg,#6c63ff,#00e5a0,#6c63ff);background-size:200% 100%;border-radius:9999px;width:0%;animation:splashLoad 2.2s cubic-bezier(.4,0,.2,1) forwards,shimmer 1.5s ease infinite;}
+.splash-powered{position:absolute;bottom:30px;color:rgba(255,255,255,.25);font-size:11px;font-family:'DM Mono',monospace;animation:fadeInUp .6s ease .7s both;}
+@keyframes splashPulse{0%,100%{box-shadow:0 0 60px rgba(108,99,255,.5),0 0 120px rgba(0,229,160,.25);transform:scale(1);}50%{box-shadow:0 0 90px rgba(108,99,255,.7),0 0 180px rgba(0,229,160,.4);transform:scale(1.02);}}
+@keyframes splashLoad{0%{width:0%;}30%{width:45%;}60%{width:75%;}85%{width:92%;}100%{width:100%;}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+[data-theme="light"] #splash-screen{background:linear-gradient(135deg,#f0f2ff 0%,#e8e4ff 50%,#f0f2ff 100%);}
+[data-theme="light"] .splash-title{color:#1a1a30;}
+[data-theme="light"] .splash-sub{color:rgba(26,26,48,.5);}
+[data-theme="light"] .splash-powered{color:rgba(26,26,48,.3);}
+[data-theme="light"] .splash-bar-wrap{background:rgba(26,26,48,.08);}
 
 /* ======================================================
-   INSTALL BANNER
+   ENHANCED INSTALL BANNER
    ====================================================== */
 #install-banner{
   position:fixed;bottom:0;left:0;right:0;z-index:2000;
   background:linear-gradient(135deg,#6c63ff,#5a52e0);
-  color:#fff;padding:14px 20px;display:none;align-items:center;
+  color:#fff;padding:16px 20px;display:none;align-items:center;
   justify-content:space-between;gap:12px;flex-wrap:wrap;
-  animation:slideUp .4s ease;box-shadow:0 -4px 20px rgba(108,99,255,.4);
+  animation:slideUp .5s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 -8px 32px rgba(108,99,255,.35);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.install-content{display:flex;align-items:center;gap:12px;}
-.install-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+#install-banner.show{display:flex;}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.install-content{display:flex;align-items:center;gap:14px;}
+.install-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;backdrop-filter:blur(4px);}
+#install-btn{background:#fff;color:#6c63ff;padding:10px 20px;font-size:13px;font-weight:700;border-radius:10px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(255,255,255,.3);}
+#install-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,255,255,.5);}
+#install-btn:active{transform:translateY(0);}
+.btn-dismiss{background:rgba(255,255,255,.15);color:#fff;padding:10px 14px;font-size:13px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;}
+.btn-dismiss:hover{background:rgba(255,255,255,.25);}
 
 /* ======================================================
    BASE
@@ -368,6 +406,7 @@ select.inp option{background:var(--surface2);color:var(--text);}
   <div class="splash-sub">Learning Hub 🇳🇬</div>
   <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
   <div class="splash-powered">Powered by Ox-Bridge Technology</div>
+  <div id="splash-pwa-status" style="position:absolute;bottom:60px;color:rgba(255,255,255,.4);font-size:11px;font-family:'DM Mono',monospace;opacity:0;transition:opacity .3s;">📱 Installing offline support...</div>
 </div>
 
 <!-- INSTALL BANNER -->
@@ -381,7 +420,7 @@ select.inp option{background:var(--surface2);color:var(--text);}
   </div>
   <div style="display:flex;gap:8px;">
     <button id="install-btn" class="btn" style="background:white;color:#6c63ff;padding:8px 16px;font-size:13px;">Install</button>
-    <button onclick="dismissInstall()" class="btn" style="background:rgba(255,255,255,.2);color:white;padding:8px 12px;font-size:13px;">✕</button>
+    <button onclick="dismissInstall()" class="btn btn-dismiss">✕</button>
   </div>
 </div>
 
@@ -890,31 +929,139 @@ let pqExam="WAEC",kidsLevel="Primary";
 let sessionInterval=null,questionCount=0;
 
 // ============================================================
-// PWA — Register service worker
+// PWA — Enhanced Service Worker & Install
 // ============================================================
+
+// Register service worker with better error handling
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js')
-      .then(()=>console.log('[PWA] Service Worker registered ✓'))
-      .catch(e=>console.log('[PWA] SW failed:',e));
+    navigator.serviceWorker.register('sw.js',{scope:'/'})
+      .then(registration=>{
+        console.log('[PWA] Service Worker registered ✓',registration.scope);
+        registration.addEventListener('updatefound',()=>{
+          const newWorker=registration.installing;
+          newWorker.addEventListener('statechange',()=>{
+            if(newWorker.state==='installed'&&navigator.serviceWorker.controller){
+              toast('📦 Update available! Refresh to update.','warning');
+            }
+          });
+        });
+      })
+      .catch(err=>{
+        console.log('[PWA] SW registration failed:',err);
+        toast('Offline mode unavailable','warning');
+      });
   });
 }
 
-// Install prompt
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPrompt=e;
-  setTimeout(()=>{const b=document.getElementById('install-banner');if(b)b.style.display='flex';},4000);
+// Listen for messages from SW
+navigator.serviceWorker?.addEventListener('message',(event)=>{
+  if(event.data?.type==='SYNC_COMPLETE'){
+    toast('📶 Synced offline data','success');
+  }
 });
+
+// Install prompt handling
+let deferredPrompt=null;
+let installDismissed=false;
+
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  const checkAndShow=()=>{
+    const splash=document.getElementById('splash-screen');
+    if(!splash||splash.classList.contains('hidden')){
+      if(!installDismissed&&!isStandalone()){
+        showInstallBanner();
+      }
+    }else{
+      setTimeout(checkAndShow,500);
+    }
+  };
+  setTimeout(checkAndShow,3000);
+});
+
+// Detect if already installed
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches||
+         window.navigator.standalone===true||
+         document.referrer.includes('android-app://');
+}
+
+// Show install banner
+function showInstallBanner(){
+  const banner=document.getElementById('install-banner');
+  if(banner&&deferredPrompt){
+    banner.style.display='flex';
+    banner.classList.add('show');
+    setTimeout(()=>{
+      if(banner.style.display==='flex'){
+        dismissInstall();
+      }
+    },15000);
+  }
+}
+
+// Install button click
 document.getElementById('install-btn')?.addEventListener('click',async()=>{
   if(!deferredPrompt)return;
+  const btn=document.getElementById('install-btn');
+  btn.textContent='Installing...';
+  btn.disabled=true;
   deferredPrompt.prompt();
   const{outcome}=await deferredPrompt.userChoice;
-  if(outcome==='accepted')toast('📱 Ox-Bridge installed!','success');
-  deferredPrompt=null; dismissInstall();
+  if(outcome==='accepted'){
+    toast('📱 Ox-Bridge installed! Check your home screen.','success');
+  }else{
+    toast('Install cancelled. You can install anytime from the menu.','info');
+    installDismissed=true;
+    localStorage.setItem('ox-install-dismissed',Date.now());
+  }
+  deferredPrompt=null;
+  dismissInstall();
 });
-window.addEventListener('appinstalled',()=>{toast('📱 App installed successfully!','success');dismissInstall();});
-function dismissInstall(){const b=document.getElementById('install-banner');if(b)b.style.display='none';}
+
+// App installed event
+window.addEventListener('appinstalled',()=>{
+  toast('🎉 Ox-Bridge is now on your home screen!','success');
+  dismissInstall();
+  deferredPrompt=null;
+  console.log('[PWA] App installed');
+});
+
+// Dismiss install banner
+function dismissInstall(){
+  const banner=document.getElementById('install-banner');
+  if(banner){
+    banner.style.animation='slideUp .3s ease reverse';
+    setTimeout(()=>{
+      banner.style.display='none';
+      banner.classList.remove('show');
+    },300);
+  }
+  installDismissed=true;
+  localStorage.setItem('ox-install-dismissed',Date.now());
+}
+
+// Check if install was previously dismissed (show again after 7 days)
+function shouldShowInstall(){
+  const dismissed=localStorage.getItem('ox-install-dismissed');
+  if(!dismissed)return true;
+  const daysSince=(Date.now()-parseInt(dismissed))/(1000*60*60*24);
+  return daysSince>7;
+}
+
+// Handle iOS install hint
+function showIOSInstallHint(){
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+  const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  if(isIOS&&isSafari&&!isStandalone()&&!localStorage.getItem('ox-ios-hint-shown')){
+    setTimeout(()=>{
+      toast('📱 Tap the share button ⬆️ then "Add to Home Screen" to install!','info',8000);
+      localStorage.setItem('ox-ios-hint-shown','true');
+    },4000);
+  }
+}
 
 // ============================================================
 // DARK/LIGHT THEME
@@ -940,17 +1087,29 @@ function loadTheme(){
 // SPLASH SCREEN
 // ============================================================
 function hideSplash(){
+  const splash=document.getElementById('splash-screen');
+  const pwaStatus=document.getElementById('splash-pwa-status');
+  if('serviceWorker' in navigator&&pwaStatus){
+    pwaStatus.style.opacity='1';
+  }
   setTimeout(()=>{
-    const s=document.getElementById('splash-screen');
-    if(s){s.classList.add('hidden');setTimeout(()=>s.remove(),500);}
-  },2200);
+    if(splash){
+      splash.classList.add('hidden');
+      setTimeout(()=>{
+        splash.remove();
+        if(deferredPrompt&&!isStandalone()&&shouldShowInstall()){
+          showInstallBanner();
+        }
+      },600);
+    }
+  },2500);
 }
 
 // ============================================================
 // STARTUP
 // ============================================================
 window.onload=async function(){
-  loadTheme(); makeParticles(); hideSplash();
+  loadTheme(); makeParticles(); hideSplash(); showIOSInstallHint();
 
   TK=localStorage.getItem("ox_token");
   CU=localStorage.getItem("ox_user");
@@ -965,15 +1124,12 @@ window.onload=async function(){
   }
   go("page-landing");
 
-  // Key listeners
   document.getElementById("li-pass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
   document.getElementById("su-conf").addEventListener("keydown",e=>{if(e.key==="Enter")doSignup();});
   document.getElementById("s-query").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch();});
-  // Chat textarea — Enter sends, Shift+Enter = newline
   document.getElementById("ac-msg").addEventListener("keydown",e=>{
     if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat();}
   });
-  // Auto-resize textarea
   document.getElementById("ac-msg").addEventListener("input",function(){
     this.style.height="auto"; this.style.height=Math.min(this.scrollHeight,100)+"px";
   });
@@ -1013,13 +1169,20 @@ function closeMob(){document.getElementById("mob-menu").style.display="none";}
 // ============================================================
 // TOAST
 // ============================================================
-function toast(msg,type="info"){
+function toast(msg,type="info",duration=3500){
   const c={success:"#00e5a0",error:"#ff4f6a",warning:"#ffb830",info:"#6c63ff"};
   const i={success:"✅",error:"❌",warning:"⚠️",info:"ℹ️"};
-  const t=document.createElement("div");t.className="toast";t.style.borderColor=c[type];
-  t.innerHTML=`<span style="font-size:18px;">${i[type]}</span><span>${msg}</span>`;
-  document.getElementById("toasts").appendChild(t);
-  setTimeout(()=>{t.style.opacity="0";t.style.transition="opacity .4s";setTimeout(()=>t.remove(),400);},3500);
+  const container=document.getElementById("toasts");
+  const t=document.createElement("div");
+  t.className="toast";
+  t.style.cssText=`border-color:${c[type]};border-left:4px solid ${c[type]};animation:slideInRight .4s cubic-bezier(.4,0,.2,1);`;
+  t.innerHTML=`<span style="font-size:18px;">${i[type]}</span><span style="flex:1;">${msg}</span><span style="cursor:pointer;opacity:.5;font-size:16px;" onclick="this.parentElement.remove()">✕</span>`;
+  container.appendChild(t);
+  const removeTimer=setTimeout(()=>{
+    t.style.animation='slideInRight .3s ease reverse';
+    setTimeout(()=>t.remove(),300);
+  },duration);
+  t.addEventListener('mouseenter',()=>clearTimeout(removeTimer));
 }
 
 // ============================================================
@@ -1346,7 +1509,7 @@ async function sendChat(){
   const qc=document.getElementById("q-count");if(qc)qc.textContent=questionCount;
 
   const btn=document.getElementById("send-btn");if(btn)btn.disabled=true;
-  appendMsg("ai","",true); // typing indicator
+  appendMsg("ai","",true);
 
   try{
     const r=await fetch(`${API}/ai/chat`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,message:msg,subject:subj,level})});
