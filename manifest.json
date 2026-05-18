@@ -1,50 +1,56 @@
 {
-  "short_name": "Ox-Bridge",
   "name": "Ox-Bridge Learning Hub",
-  "description": "AI-powered learning platform for Nigerian students",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "apple-icon-180.png",
-      "type": "image/png",
-      "sizes": "180x180",
-      "purpose": "any"
-    }
-  ],
+  "short_name": "Ox-Bridge",
+  "description": "AI-powered learning for Nigerian students — WAEC, JAMB, University",
   "start_url": "/",
-  "scope": "/",
-  "background_color": "#0a0a0f",
-  "theme_color": "#6c63ff",
   "display": "standalone",
   "orientation": "portrait",
-  "lang": "en-NG",
-  "categories": ["education"],
+  "background_color": "#0a0a0f",
+  "theme_color": "#6c63ff",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icon-72.png", "sizes": "72x72", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-96.png", "sizes": "96x96", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Ox-Bridge Dashboard"
+    },
+    {
+      "src": "screenshot-2.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Ox-Bridge Mobile"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Professor AI",
+      "short_name": "Professor",
+      "description": "Chat with your AI tutor",
       "url": "/?page=aichat",
-      "icons": [{"src": "icon-192.png", "sizes": "192x192"}]
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Quiz Arena",
+      "short_name": "Quiz",
+      "description": "Take a quick quiz",
       "url": "/?page=quiz",
-      "icons": [{"src": "icon-192.png", "sizes": "192x192"}]
-    },
-    {
-      "name": "Kids Zone",
-      "url": "/?page=kids",
-      "icons": [{"src": "icon-192.png", "sizes": "192x192"}]
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
     }
   ]
 }
