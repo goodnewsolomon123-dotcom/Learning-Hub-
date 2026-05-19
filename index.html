@@ -1576,56 +1576,46 @@ async function doSearch(){
 // PAST QUESTIONS
 // ============================================================
 function setPQExam(exam,el){pqExam=exam;document.getElementById("pq-w").className="btn "+(exam==="WAEC"?"btn-primary":"btn-outline");document.getElementById("pq-j").className="btn "+(exam==="JAMB"?"btn-primary":"btn-outline");}
-async function loadPQ(){
-  const subj=document.getElementById("pq-subj").value.trim();
-  if(!subj)return toast("Please enter a subject","warning");
-
-  document.getElementById("pq-display").style.display="none";
-  document.getElementById("pq-loading").style.display="block";
-  document.getElementById("pq-next").style.display="none";
-
-  try{
-    let q = null;
-
-    // STEP 1: Try the random endpoint first
-    const r1=await fetch(`${API}/past-questions/random/${encodeURIComponent(subj)}?exam=${pqExam}`);
-    const d1=await r1.json();
-
-    // Handle object format: { question: {...} }
-    if(d1 && d1.question && d1.question.question_text){
-      q = d1.question;
+async function loadPQ() {
+  const subj = document.getElementById("pq-subj").value.trim();
+  if (!subj) return toast("Please enter a subject", "warning");
+  
+  document.getElementById("pq-display").style.display = "none";
+  document.getElementById("pq-loading").style.display = "block";
+  document.getElementById("pq-next").style.display = "none";
+  
+  try {
+    // FIX: Use list endpoint to get ALL questions, then pick random
+    const r = await fetch(`${API}/past-questions/${pqExam}/${encodeURIComponent(subj)}`);
+    const questions = await r.json();
+    
+    document.getElementById("pq-loading").style.display = "none";
+    
+    // Check if we got questions
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return toast("No questions found. Try another subject.", "warning");
     }
-
-    // STEP 2: If random returned empty or no question, fallback to list endpoint
-    if(!q){
-      const r2=await fetch(`${API}/past-questions/${pqExam}/${encodeURIComponent(subj)}`);
-      const d2=await r2.json();
-
-      // Handle array format: [ {...}, {...} ]
-      if(Array.isArray(d2) && d2.length > 0){
-        q = d2[Math.floor(Math.random() * d2.length)];
-      }
-    }
-
-    document.getElementById("pq-loading").style.display="none";
-
-    if(!q) return toast("No questions found for this subject. Try another.","warning");
-
-    // Render the question — same as before
-    document.getElementById("pq-b1").textContent=pqExam;
-    document.getElementById("pq-b2").textContent=q.year?`Year: ${q.year}`:"Past Question";
-    document.getElementById("pq-q").textContent=q.question_text;
-    document.getElementById("pq-expl").style.display="none";
-
-    document.getElementById("pq-opts").innerHTML=["a","b","c","d"].map(o=>
-      `<button class="opt" onclick="answerPQ('${o.toUpperCase()}','${(q.correct_answer||"A").toUpperCase()}','${(q.explanation||"").replace(/'/g,"\\'")}',this)">${o.toUpperCase()}) ${q["option_"+o]||""}</button>`
+    
+    // Pick random question from the list
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    
+    // Fill in question data
+    document.getElementById("pq-b1").textContent = pqExam;
+    document.getElementById("pq-b2").textContent = q.year ? `Year: ${q.year}` : "Past Question";
+    document.getElementById("pq-q").textContent = q.question_text;
+    document.getElementById("pq-expl").style.display = "none";
+    
+    // Generate option buttons
+    document.getElementById("pq-opts").innerHTML = ["a", "b", "c", "d"].map(o => 
+      `<button class="opt" onclick="answerPQ('${o.toUpperCase()}','${(q.correct_answer || "A").toUpperCase()}','${(q.explanation || "").replace(/'/g, "\\'")}',this)">${o.toUpperCase()}) ${q["option_" + o] || ""}</button>`
     ).join("");
-
-    document.getElementById("pq-display").style.display="block";
-
-  }catch(e){
-    document.getElementById("pq-loading").style.display="none";
-    toast("Failed to load question. Check your connection.","error");
+    
+    document.getElementById("pq-display").style.display = "block";
+    
+  } catch (e) {
+    document.getElementById("pq-loading").style.display = "none";
+    console.error("LoadPQ Error:", e);
+    toast("Failed to load question", "error");
   }
 }
 
