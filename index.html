@@ -1353,55 +1353,77 @@ function goQuizFromLearn(){document.getElementById("qz-topic").value=document.ge
 // QUIZ
 // ============================================================
 async function startQuiz(){
-  qSubj=document.getElementById("qz-subj").value.trim()||"General";
-  qLevel=document.getElementById("qz-level").value;
-  qTopic=document.getElementById("qz-topic").value.trim()||qSubj;
-  setBtnLoad("qz-btn",true,"🧠 Generating...");
-  try{
-    const r=await fetch(`${API}/quiz/${encodeURIComponent(qTopic)}?level=${encodeURIComponent(qLevel)}&subject=${encodeURIComponent(qSubj)}`);
-    const d=await r.json();
-    if(r.ok&&Array.isArray(d.quiz)&&d.quiz.length>0){
-      qData=d.quiz;qIdx=0;qScore=0;
-      document.getElementById("qz-setup").style.display="none";
-      document.getElementById("qz-active").style.display="block";
-      document.getElementById("qz-results").style.display="none";
-      renderQ();
-    }else toast("Could not generate quiz. Try again.","error");
-  }catch(e){toast("Connection error","error");}
-  finally{setBtnLoad("qz-btn",false);}
-}
-function renderQ(){
-  if(qIdx>=qData.length){showResults();return;}
-  const q=qData[qIdx];
-  document.getElementById("qz-counter").textContent=`Q ${qIdx+1}/${qData.length}`;
-  document.getElementById("qz-live").textContent=qScore;
-  document.getElementById("qz-q").textContent=q.question;
-  document.getElementById("qz-expl").style.display="none";
-  document.getElementById("qz-next").style.display="none";
-  document.getElementById("qz-opts").innerHTML=(q.options||[]).map((o,i)=>`<button class="opt" onclick="answerQ(${i},this)">${o}</button>`).join("");
-  startTimer(q.time_limit_sec||30);
-}
-function startTimer(s){
-  clearInterval(qTimer);qSec=s;
-  const fill=document.getElementById("timer-fill");
-  fill.style.width="100%";fill.style.background="var(--accent2)";
-  document.getElementById("qz-time").textContent=s;
-  qTimer=setInterval(()=>{
-    qSec--;document.getElementById("qz-time").textContent=qSec;
-    fill.style.width=(qSec/s*100)+"%";
-    if(qSec<=10)fill.style.background="var(--danger)";
-    if(qSec<=0){clearInterval(qTimer);toast("Time up! ⏱","warning");document.querySelectorAll("#qz-opts .opt").forEach(b=>b.disabled=true);document.getElementById("qz-next").style.display="block";}
-  },1000);
-}
-function answerQ(idx,btn){
-  clearInterval(qTimer);
-  const q=qData[qIdx];const opts=document.querySelectorAll("#qz-opts .opt");opts.forEach(b=>b.disabled=true);
-  const ci=["A","B","C","D"].indexOf((q.answer||"A").toUpperCase());
-  if(idx===ci){btn.classList.add("correct");qScore++;document.getElementById("qz-live").textContent=qScore;toast("✅ Correct!","success");}
-  else{btn.classList.add("wrong");if(opts[ci])opts[ci].classList.add("correct");toast("❌ Wrong!","error");}
-  if(q.explanation){const e=document.getElementById("qz-expl");e.textContent="💡 "+q.explanation;e.style.display="block";}
-  document.getElementById("qz-next").style.display="block";
-}
+    // --- QUIZ (UPDATED FOR MANUAL QUESTIONS) ---
+    async function startQuizSession() {
+        document.getElementById('quiz-area').style.display = 'block';
+        document.getElementById('q-feedback').innerText = "";
+        document.getElementById('next-btn').style.display = 'none';
+        
+        // Pick a random subject from our new manual list
+        const subjects = ["Economics", "Government", "Literature-in-English", "Commerce", "Biology", "Physics", "Chemistry", "Mathematics"];
+        const randomTopic = subjects[Math.floor(Math.random() * subjects.length)];
+        
+        // CHANGE: Fetch from /quiz/manual/ instead of /quiz/
+        const res = await fetch(`${API}/quiz/manual/${randomTopic}`);
+        const data = await res.json();
+        
+        if(data.quiz && Array.isArray(data.quiz)) {
+            currentQuiz = data.quiz;
+            qIndex = 0;
+            showQuestion();
+        } else {
+            document.getElementById('q-text').innerText = `No manual questions found for ${randomTopic} yet. Try another subject!`;
+            document.getElementById('q-options').innerHTML = "";
+        }
+    }
+
+    function showQuestion() {
+        if(qIndex >= currentQuiz.length) {
+            document.getElementById('q-text').innerText = "Quiz Complete! +10 Points added.";
+            document.getElementById('q-options').innerHTML = "";
+            // Add points to leaderboard
+            fetch(`${API}/progress/add-score`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: currentUser, points: 10 })
+            });
+            return;
+        }
+        
+        const q = currentQuiz[qIndex];
+        document.getElementById('q-text').innerText = `Q${qIndex+1}: ${q.question}`;
+        const optsDiv = document.getElementById('q-options');
+        optsDiv.innerHTML = "";
+        
+        // Manual questions have "options" as an array of strings
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.className = "btn-secondary";
+            // Check if the option starts with the correct answer letter (e.g., "B)")
+            btn.onclick = () => checkAnswer(opt, q.answer);
+            optsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const fb = document.getElementById('q-feedback');
+        // Simple check: does the selected option contain the correct letter?
+        if(selected.includes(correct + ")") || selected.startsWith(correct)) {
+            fb.innerText = "✅ Correct!";
+            fb.style.color = "green";
+        } else {
+            fb.innerText = `❌ Wrong. Correct was ${correct}`;
+            fb.style.color = "red";
+        }
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        qIndex++;
+        showQuestion();
+        document.getElementById('q-feedback').innerText = "";
+        document.getElementById('next-btn').style.display = 'none';
+    }
 function nextQ(){qIdx++;renderQ();}
 async function showResults(){
   clearInterval(qTimer);
